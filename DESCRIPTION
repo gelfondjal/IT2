@@ -1,0 +1,15 @@
+Package: IT2
+Type: Package
+Title: Tracks and manages dependencies for R project
+Version: 0.1
+Date: 2014-06-29
+Author: Jonathan Gelfond
+Maintainer: Who to complain to <gelfondjal@uthscsa.edu>
+Description: More about what it does (maybe more than one line)
+License: GPL
+Depends:
+    methods,
+    igraph,
+    digest,DBI,RSQLite,fields,
+    d3Network,
+    R2HTML
