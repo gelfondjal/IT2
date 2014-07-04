@@ -8,12 +8,15 @@
 #' @details Will not overwrite existing program
 #' @export
 #' 
-sprout.program <- function(project.id,source.file.name,description,seed=2011,capture.load.command="source(\"~/DiscloseR/capture_functions_3.R\")",controller=FALSE){
+sprout.program <- function(project.id=NA,source.file.name=NA,description="",seed=2011,capture.load.command="library(IT2)",controller=FALSE){
   
   
+  if(controller){
+    source.file.name <- "tree_controller.R"
+    description <- "Operates on analysis tree"
+  }
   
-  
-  start.lines.generic <- c("rm(list=ls())",paste("set.seed(",seed,")"),"library(devtools)",
+  start.lines.generic <- c("rm(list=ls())",paste("set.seed(",seed,")"),"",
                            capture.load.command)
   
   start.lines.specific <- c(paste0("source.file <-","\"",source.file.name,"\""),paste0("project.id <- \"",project.id,"\""))
@@ -26,7 +29,16 @@ sprout.program <- function(project.id,source.file.name,description,seed=2011,cap
   
   final.line <- "dependency.out <- finalize.dependency.si(source_info,commit=\"\",effort.hours=0)"
   
-  final.line <- ifelse(controller,"",final.line)
+
+  
+  controller.lines <- c( "#sync.test.si(source_info)     #Tests project synchronization ",
+                     "#source.sync.si(source_info,run=TRUE) # This runs all programs needed to synchronize",
+                       "#project.report()               #This summarizes project in html",
+                         "#sprout.program(source_info$project.id,source.file.name=\"myprog.R\",\"Describe myprog\") #makes new program",
+                         "#send.branch(branch_cut,all=FALSE) #this packages a analytical branch ans sends to swap directory",
+                       "#graft.branch(branch_name,run=TRUE,start.up=FALSE,project.id=NULL,overwriteTF=FALSE) #This loads and runs branch")
+  
+  final.line <- ifelse(controller,controller.lines,final.line)
   
   strings.to.write <- c(rep("\n",1),start.lines.generic,rep("\n",1),start.lines.specific,initialize.lines,body.lines,final.line)
   

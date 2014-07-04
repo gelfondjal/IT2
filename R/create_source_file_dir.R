@@ -12,6 +12,15 @@
 create.source.file.dir <- function(project.id="",source.file,source.description="",project.path=get.project.path(project.id),project.tree=project.directory.tree,
                                    
                                    git.path=NULL){
+  require(devtools)
+  require(plyr)
+  require(igraph)
+  require(digest)
+  require(DBI)
+  require(RSQLite)
+  require(fields)
+  require(R2HTML)
+  
   
   analysis.dir <- file.path(project.path,project.tree$analysis) # where the programs are
   data.dir <- file.path(project.path,project.tree$data)  # where the data are
