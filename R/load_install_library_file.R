@@ -87,12 +87,13 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NA,verbose=F
       
       install.command.list <- grep("^install",install.command.list,value=TRUE)
       
-      sapply(install.command.list,function(x){source(textConnection(x))})
+      if(length(install.command.list)>0){
+        sapply(install.command.list,function(x){source(textConnection(x))})
   
-      lapply(subset(packages.info,repos %in% install.command.list)$Package, require, character.only=TRUE)      
+        lapply(subset(packages.info,repos %in% install.command.list)$Package, require, character.only=TRUE)      
              
-      packages.info$install.check[packages.info$repos %in% install.command.list] <- TRUE
-      
+        packages.info$install.check[packages.info$repos %in% install.command.list] <- TRUE
+      }
 
       
     })  
