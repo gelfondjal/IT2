@@ -8,7 +8,7 @@
 #' @details Will not overwrite existing program
 #' @export
 #' 
-sprout.program <- function(project.id,source.file.name,description,seed=2011,capture.load.command="source(\"~/DiscloseR/capture_functions_3.R\")"){
+sprout.program <- function(project.id,source.file.name,description,seed=2011,capture.load.command="source(\"~/DiscloseR/capture_functions_3.R\")",controller=FALSE){
   
   
   
@@ -26,6 +26,7 @@ sprout.program <- function(project.id,source.file.name,description,seed=2011,cap
   
   final.line <- "dependency.out <- finalize.dependency.si(source_info,commit=\"\",effort.hours=0)"
   
+  final.line <- ifelse(controller,"",final.line)
   
   strings.to.write <- c(rep("\n",1),start.lines.generic,rep("\n",1),start.lines.specific,initialize.lines,body.lines,final.line)
   

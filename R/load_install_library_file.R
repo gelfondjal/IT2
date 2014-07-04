@@ -1,15 +1,40 @@
 #' Loads librarys within the file library.list.file
 #' @param library.data.file CSV File with a set of library names and repository locations
+#' @param subgroup data frame with Package and repos columns is null if not specific to code
+#' @param verbose Print which libraries are installed and loaded
 #' @return Library information data
 #' @details Installs and loads all packages
 #' @export
 #' 
 #' 
-load.install.library.file <- function(library.data.file){
+load.install.library.file <- function(library.data.file=NA,subgroup=NA,verbose=FALSE){
  
+  if(is.na(library.data.file)){library.data.file <- file.path(source_info_arg$support.dir,source_info_arg$support.library.file)}
   
   packages.info <- read.csv(library.data.file,as.is=TRUE)
   
+  if(is.na(packages.info$specific)){packages.info$specific <- FALSE}
+  
+  #Only load nonspecific packages if subgroup is null
+  
+  if(!is.null(subgroup)){
+    packages.info <- subset(packages.info,!specific)
+    
+  }else{
+    
+    packages.info <- subset(packages.info,(!specific) | (Package %in% subgroup$Package))
+    
+    
+    new.packs <- subset(subgroup,(Package %in% packages.info$Package))
+    
+    packages.info <- rbind(packages.info,new.packs)
+    
+    if(nrow(new.packs)>0){
+      
+      write.csv(packages.info[order(packages.info$Package),],library.data.file,row.names=FALSE)
+    }
+    
+  }
   
   
   
@@ -20,7 +45,7 @@ load.install.library.file <- function(library.data.file){
     
     if(packages.info$install.check[library.iter]){
       library(packages.info$Package[library.iter],character.only=TRUE)
-      print(paste(packages.info$Package[library.iter],"Installed, loaded"))
+      if(verbose){print(paste(packages.info$Package[library.iter],"Installed, loaded"))}
     }
   }
   
@@ -50,6 +75,29 @@ load.install.library.file <- function(library.data.file){
     
   }
   
+  # Use install command
+  
+  if(sum((packages.info$install.check==FALSE)&(packages.info$repos!="bioC"),na.rm=TRUE)){
+    
+    
+    try({
+      
+      
+      install.command.list <- subset(packages.info,(repos!="bioC")&(install.check==FALSE))$repos
+      
+      install.command.list <- grep("^install",install.command.list,value=TRUE)
+      
+      sapply(install.command.list,function(x){source(textConnection(x))})
+  
+      lapply(subset(packages.info,repos %in% install.command.list)$Package, require, character.only=TRUE)      
+             
+      packages.info$install.check[packages.info$repos %in% install.command.list] <- TRUE
+      
+
+      
+    })  
+    
+  }
   
   
   for(library.iter in 1:nrow(packages.info)){
@@ -69,7 +117,7 @@ load.install.library.file <- function(library.data.file){
         
         library(packages.info$Package[library.iter],character=TRUE)		
         
-        print(paste("Loaded",packages.info$Package[library.iter]))
+        if(verbose){ print(paste("Loaded",packages.info$Package[library.iter]))}
         
         
         packages.info$install.check[library.iter] <- TRUE

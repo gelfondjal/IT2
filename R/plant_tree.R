@@ -6,7 +6,8 @@
 #' @export
 plant.tree <- function(project.id,project.path,swap.directory){
   
-  
+  project.path <- file.path(project.path,project.id)
+  swap.directory <- file.path(swap.directory,project.id)
   
   empty.orchard <- data.frame(project.id=project.id,project.path=project.path,swap.directory=swap.directory)
   
