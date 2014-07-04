@@ -7,29 +7,37 @@
 #' @export
 #' 
 #' 
-load.install.library.file <- function(library.data.file=NA,subgroup=NA,verbose=FALSE){
+load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose=FALSE){
  
-  if(is.na(library.data.file)){library.data.file <- file.path(source_info_arg$support.dir,source_info_arg$support.library.file)}
+  if(is.na(library.data.file)){library.data.file <- file.path(source_info$support.dir,source_info$support.library.file)}
+  
+  if(!file.exists(library.data.file)){
+    print("No library information file")
+    library.stub <- data.frame(Package="devtools",repos="",specific=FALSE)
+    write.csv(library.stub,library.data.file,row.names=FALSE)
+  }
   
   packages.info <- read.csv(library.data.file,as.is=TRUE)
   
-  if(is.na(packages.info$specific)){packages.info$specific <- FALSE}
+  if(is.null(packages.info$specific)){packages.info$specific <- FALSE}
   
   #Only load nonspecific packages if subgroup is null
   
-  if(!is.null(subgroup)){
+  if(is.null(subgroup)){
     packages.info <- subset(packages.info,!specific)
     
   }else{
     
-    packages.info <- subset(packages.info,(!specific) | (Package %in% subgroup$Package))
+    packages.info <- subset(packages.info,(!specific) | (Package %in% subgroup$Package))    
     
+    new.packs <- subset(subgroup,!(Package %in% packages.info$Package))
     
-    new.packs <- subset(subgroup,(Package %in% packages.info$Package))
-    
-    packages.info <- rbind(packages.info,new.packs)
-    
+  
     if(nrow(new.packs)>0){
+      
+      new.packs$specific <- NA
+      
+      packages.info <- rbind(packages.info,new.packs)
       
       write.csv(packages.info[order(packages.info$Package),],library.data.file,row.names=FALSE)
     }

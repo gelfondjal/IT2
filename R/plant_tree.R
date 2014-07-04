@@ -33,7 +33,7 @@ plant.tree <- function(project.id,project.path,swap.directory){
     
     dir.create(project.path)
     
-    dir.create(file.path(project.path,project.tree$analysis))
+    dir.create(file.path(project.path,project.directory.tree$analysis))
     
     sprout.program(project.id,source.file.name=NA,description="",seed=2011,capture.load.command="library(IT2)",controller=TRUE)
     

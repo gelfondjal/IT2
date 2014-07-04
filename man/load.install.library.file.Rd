@@ -3,10 +3,15 @@
 \alias{load.install.library.file}
 \title{Loads librarys within the file library.list.file}
 \usage{
-load.install.library.file(library.data.file)
+load.install.library.file(library.data.file = NA, subgroup = NULL,
+  verbose = FALSE)
 }
 \arguments{
 \item{library.data.file}{CSV File with a set of library names and repository locations}
+
+\item{subgroup}{data frame with Package and repos columns is null if not specific to code}
+
+\item{verbose}{Print which libraries are installed and loaded}
 }
 \value{
 Library information data

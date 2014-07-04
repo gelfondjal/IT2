@@ -38,9 +38,11 @@ sprout.program <- function(project.id=NA,source.file.name=NA,description="",seed
                          "#send.branch(branch_cut,all=FALSE) #this packages a analytical branch ans sends to swap directory",
                        "#graft.branch(branch_name,run=TRUE,start.up=FALSE,project.id=NULL,overwriteTF=FALSE) #This loads and runs branch")
   
-  final.line <- ifelse(controller,controller.lines,final.line)
+  if(controller){final.line <- controller.lines}
   
   strings.to.write <- c(rep("\n",1),start.lines.generic,rep("\n",1),start.lines.specific,initialize.lines,body.lines,final.line)
+
+  #print(strings.to.write)
   
   target.file <- file.path(get.project.path(project.id),project.directory.tree$analysis,source.file.name)
   
@@ -48,6 +50,7 @@ sprout.program <- function(project.id=NA,source.file.name=NA,description="",seed
     
     dir.create(file.path(get.project.path(project.id),project.directory.tree$analysis),showWarnings=FALSE)
     
+
     
     write(strings.to.write,target.file)
     return(TRUE)

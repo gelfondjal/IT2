@@ -9,7 +9,8 @@ get.fs.time <- function(){
     # Get the filesystem write time
     tf <- tempfile()
     write(0,tf)
-    
-    return(file.info(tf)$mtime)
+    timeout <- file.info(tf)$mtime
+    file.remove(tf)
+    return(timeout)
     
 }
