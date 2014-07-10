@@ -11,5 +11,5 @@ Depends:
     methods,
     igraph,
     digest,DBI,RSQLite,fields,
-    d3Network,
+    gplots,
     R2HTML

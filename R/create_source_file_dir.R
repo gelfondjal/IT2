@@ -20,6 +20,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   require(RSQLite)
   require(fields)
   require(R2HTML)
+  require(gplots)
   
   
   analysis.dir <- file.path(project.path,project.tree$analysis) # where the programs are
