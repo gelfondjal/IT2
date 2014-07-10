@@ -21,6 +21,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   require(fields)
   require(R2HTML)
   require(gplots)
+  require(rCharts)
   
   
   analysis.dir <- file.path(project.path,project.tree$analysis) # where the programs are
