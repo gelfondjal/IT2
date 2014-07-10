@@ -2,7 +2,7 @@
 #' @param coords coordinates for plotting
 #' @param v vertex
 #' @param param graphics parameters
-#' 
+#' @export
 
 mystar <- function(coords, v=NULL, params) {
  # library(igraph)

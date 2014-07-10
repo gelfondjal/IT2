@@ -17,6 +17,8 @@ plot.biggraph.horizontal.si <- function(source_info,legend.tf=FALSE,title="Depen
   
   
   
+  add.vertex.shape("star", clip=igraph::igraph.shape.noclip,
+                   plot=mystar, parameters=list(vertex.norays=5))
   
   g.all <- get.project.info.si(source_info)$graph
   

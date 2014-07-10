@@ -15,6 +15,9 @@ Plot.biggraph.horizontal <- function(g.all,legend.tf=FALSE,title="Dependencies",
   # plots the depedency tree described by g.all
   # does not plot names
   
+  add.vertex.shape("star", clip=igraph::igraph.shape.noclip,
+                                  plot=mystar, parameters=list(vertex.norays=5))
+  
   g.all.2 <- g.all
   V(g.all.2)$name <- paste0(1:length(V(g.all.2)$name),".",(V(g.all.2)$file))
   V(g.all.2)$old.name <- V(g.all)$name
