@@ -25,6 +25,8 @@ mystar <- function(coords, v=NULL, params) {
                    add=TRUE, inches=FALSE)
          })
 }
+
+
 # no clipping, edges will be below the vertices anyway
 #igraph::add.vertex.shape("star", clip=igraph::igraph.shape.noclip,
 #                 plot=mystar, parameters=list(vertex.norays=5))
