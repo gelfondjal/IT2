@@ -5,7 +5,7 @@
 #' @details Assumes source_info in workspace
 #' @export
 
-project.report <- function(source_infograph.width=960,graph.height=500){
+project.report <- function(graph.width=960,graph.height=500){
   
 
   
