@@ -8,7 +8,9 @@
 #' @param xstreatch Aspect ratio
 #' @param legend.cex Size of legen font
 #' @return list with graph element and graph made for DAG layout
-#' @export
+#' @export 
+#' 
+#' 
 
 plot.biggraph.horizontal.si <- function(source_info,legend.tf=FALSE,title="Dependencies",vertex.sizes=c(10,0.5),vertex.dist=0,label.cex=0.75,xstretch=1,legend.cex=1){
   

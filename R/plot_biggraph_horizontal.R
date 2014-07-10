@@ -12,6 +12,8 @@
 
 Plot.biggraph.horizontal <- function(g.all,legend.tf=FALSE,title="Dependencies",vertex.sizes=c(10,0.5),vertex.dist=0,label.cex=0.75,xstretch=1,legend.cex=1,black.vertex.list=NULL){
   
+  
+  
   # plots the depedency tree described by g.all
   # does not plot names
   
