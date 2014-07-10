@@ -10,7 +10,10 @@ mystar(coords, v = NULL, params)
 
 \item{v}{vertex}
 
-\item{param}{graphics parameters}
+\item{params}{graphics parameters}
+}
+\value{
+nothing returned
 }
 \description{
 Star function for igraph plotting

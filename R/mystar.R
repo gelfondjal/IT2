@@ -1,7 +1,7 @@
 #' Star function for igraph plotting
 #' @param coords coordinates for plotting
 #' @param v vertex
-#' @param param graphics parameters
+#' @param params graphics parameters
 #' @return nothing returned
 #' @export
 
@@ -25,6 +25,8 @@ mystar <- function(coords, v=NULL, params) {
                    stars=matrix(c(size,size/2), nrow=1, ncol=nor*2),
                    add=TRUE, inches=FALSE)
          })
+  
+  return()
 }
 
 

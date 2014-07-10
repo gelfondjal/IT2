@@ -4,7 +4,7 @@
 \title{Make plot of network within html documents.
 Summarize all programs.}
 \usage{
-project.report(source_infograph.width = 960, graph.height = 500)
+project.report(graph.width = 960, graph.height = 500)
 }
 \arguments{
 \item{graph.width}{Sankey Plot dimensions}
