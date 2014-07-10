@@ -27,13 +27,15 @@ plant.tree <- function(project.id,project.path,swap.directory){
     
     orchards.old <- read.csv(orchard.site,as.is=TRUE)
     
-    write.csv(rbind(orchards.old,empty.orchard),orchard.site,row.names=FALSE)
-    
+   
     dir.create(swap.directory)
     
     dir.create(project.path)
     
     dir.create(file.path(project.path,project.directory.tree$analysis))
+    
+    write.csv(rbind(orchards.old,empty.orchard),orchard.site,row.names=FALSE)
+    
     
     sprout.program(project.id,source.file.name=NA,description="",seed=2011,capture.load.command="library(IT2)",controller=TRUE)
     
