@@ -24,7 +24,7 @@ Make.summary.graph <- function(dependency.dir=NULL,dependency.object=NULL,plot.g
   file.class <- rbind(cbind("output",outputs),cbind("data",data.types),cbind("source",sources))
   file.type.df <- data.frame(file.type=file.class[,1],suffix=file.class[,2])
   
-  shape.vector <- c("circle","star","square")
+  shape.vector <- c("circle","square","square")
   names(shape.vector) <- c("data","source","output")
   
   
