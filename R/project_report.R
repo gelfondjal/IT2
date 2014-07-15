@@ -7,7 +7,7 @@
 
 project.report <- function(graph.width=960,graph.height=500){
   
-
+  require(R2HTML)
   
   project.info <- get.project.info.si(source_info)
   
@@ -119,22 +119,22 @@ project.report <- function(graph.width=960,graph.height=500){
   
   HTMLStart(outdir = source_info$results.dir, filename = "project_summary", extension = "html", echo = FALSE, autobrowse = FALSE, HTMLframe = TRUE, withprompt = "HTML> ", CSSFile = "R2HTML.css", BackGroundColor = "FFFFFF", BackGroundImg = "", Title = "R output")
   
-  HTML(subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec")),caption=paste(source_info$project.id,"Project Summary"),captionalign="top")
+  R2HTML::HTML(subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec")),caption=paste(source_info$project.id,"Project Summary"),captionalign="top")
   
-  HTML(data.frame(Big_Graph=make.hyperlink(project.graph.file,"Project Graph")),align="center")
-  HTML(data.frame(No_support_file_graph=make.hyperlink(reduced.project.graph.file,"Project Graph")),align="center")
+  R2HTML::HTML(data.frame(Big_Graph=make.hyperlink(project.graph.file,"Project Graph")),align="center")
+  R2HTML::HTML(data.frame(No_support_file_graph=make.hyperlink(reduced.project.graph.file,"Project Graph")),align="center")
   
   supports <- subset(rbind.fill(outputs),Description=="Support file")
   
   for(namer in names(outputs)){
     
-    HTML(subset(outputs[[namer]],Description!="Support file"),caption=namer,captionalign="top")
+    R2HTML::HTML(subset(outputs[[namer]],Description!="Support file"),caption=namer,captionalign="top")
     
   }
   
-  HTML(subset(supports,!duplicated(File)),caption="Support files",captionalign="top")
+  R2HTML::HTML(subset(supports,!duplicated(File)),caption="Support files",captionalign="top")
   
   
-  HTMLStop()
+  R2HTML::HTMLStop()
   
 }
