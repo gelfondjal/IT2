@@ -2,6 +2,7 @@
 #' @param project.id
 #' @return source_info for generic source_info tree operations
 #' @details Creates tree_controller.R directory
+#' @export
 pull_source_info <- function(project.id){
   
   source_info <- list()
