@@ -35,7 +35,7 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
   
     if(nrow(new.packs)>0){
       
-      new.packs$specific <- NA
+      new.packs$specific <- 1
       
       packages.info <- rbind(packages.info,new.packs)
       
