@@ -27,7 +27,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   analysis.dir <- file.path(project.path,project.tree$analysis) # where the programs are
   data.dir <- file.path(project.path,project.tree$data)  # where the data are
   results.dir <- file.path(project.path,project.tree$results,source.file) # Standard output
-  tex.dir <- file.path(project.path,project.tree$results,source.file,project.directory.tree$texdir) # Publication quality output
+  tex.dir <- file.path(results.dir,project.directory.tree$tex.dir) # Publication quality output
   dependency.dir <- file.path(project.path,project.tree$dependency.dir)
   support.dir <- file.path(project.path,project.tree$support)
   library.dir <- file.path(support.dir,project.tree$library.bank)
