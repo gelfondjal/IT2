@@ -17,7 +17,7 @@ get_orchard <- function(){
   
   orchard <- read.csv(orchard.site,as.is=TRUE)  
   
-  orchard <- orchard[order(ochard$project.id),]
+  orchard <- orchard[order(orchard$project.id),]
   
   return(orchard)
 }
