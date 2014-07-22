@@ -1,9 +1,10 @@
 #' Synchronize project by running necessary R scripts
 #' @param source_info Project information within source_info list
 #' @param run logical indicated whether to run or just identify asynchrony
+#' @param plot.to.file logical for writing file in tree_controller.R directory
 #' @return Data.frame with sources needed to synchronize with run times
 #' @export
-source.sync.si <- function(source_info,run=TRUE){
+source.sync.si <- function(source_info,run=TRUE,plot.to.file=FALSE){
   
   # Run in order 
   # Compute run times
@@ -33,8 +34,13 @@ source.sync.si <- function(source_info,run=TRUE){
   
   propagated.names <- V(sync.out$propagated.graph)$name[V(sync.out$propagated.graph)$synced=="No"]
   
+  synPlotFile <- file.path(project_info$project.path,project.directory.tree$results,"tree_controller.R","sync_updater.png")
+  
+  if(plot.to.file){png(syncPlotFile)}
+  
   Plot.biggraph.horizontal(project_info$graph,title="Files to syncrhonise",black.vertex.list=propagated.names)			
   
+  if(plot.to.file){graphics.off()}
   
   run.times <- ddply(tree.to.run,"source.file",function(x){
     
@@ -64,9 +70,18 @@ source.sync.si <- function(source_info,run=TRUE){
       
       remaining.time <- paste0(sum(subset(run.times,source.file %in% sync.out$sources.to.sync$file)$last.run.time.sec,na.rm=TRUE)," secs")
       
-      title.of.graph <- paste(ifelse(sync.out$synchronized,"Sychronized Remaining","Files to synchronize"),"Run time = ",remaining.time)
+      title.of.graph <- paste(ifelse(sync.out$synchronized,"Sychronized Remaining","Files to synchronize"),"Run time = ",remaining.time,
+                      "\n",basename(ID.sync.out$path[source.iter]))        
+                              
+                      
+      
+      if(plot.to.file){png(syncPlotFile)}
+      
       
       Plot.biggraph.horizontal(project_info$graph,title=title.of.graph,black.vertex.list=propagated.names)			
+      
+      
+      if(plot.to.file){graphics.off()}
       
       if(source.iter<=nrow(ID.sync.out)){clean_source(file.path(ID.sync.out$path[source.iter],ID.sync.out$file[source.iter]))}
       

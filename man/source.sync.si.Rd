@@ -3,12 +3,14 @@
 \alias{source.sync.si}
 \title{Synchronize project by running necessary R scripts}
 \usage{
-source.sync.si(source_info, run = TRUE)
+source.sync.si(source_info, run = TRUE, plot.to.file = FALSE)
 }
 \arguments{
 \item{source_info}{Project information within source_info list}
 
 \item{run}{logical indicated whether to run or just identify asynchrony}
+
+\item{plot.to.file}{logical for writing file in tree_controller.R directory}
 }
 \value{
 Data.frame with sources needed to synchronize with run times
