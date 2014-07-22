@@ -34,7 +34,10 @@ source.sync.si <- function(source_info,run=TRUE,plot.to.file=FALSE){
   
   propagated.names <- V(sync.out$propagated.graph)$name[V(sync.out$propagated.graph)$synced=="No"]
   
-  syncPlotFile <- file.path(project_info$project.path,project.directory.tree$results,"tree_controller.R","sync_updater.png")
+  
+  syncPlotFile <- file.path(source_info$project.path,project.directory.tree$results,"tree_controller.R","sync_updater.png")
+  
+  dir.create(dirname(syncPlotFile),showWarnings=FALSE)
   
   if(plot.to.file){png(syncPlotFile)}
   
@@ -71,7 +74,7 @@ source.sync.si <- function(source_info,run=TRUE,plot.to.file=FALSE){
       remaining.time <- paste0(sum(subset(run.times,source.file %in% sync.out$sources.to.sync$file)$last.run.time.sec,na.rm=TRUE)," secs")
       
       title.of.graph <- paste(ifelse(sync.out$synchronized,"Sychronized Remaining","Files to synchronize"),"Run time = ",remaining.time,
-                      "\n",basename(ID.sync.out$path[source.iter]))        
+                      "\n",ID.sync.out$file[source.iter])        
                               
                       
       
