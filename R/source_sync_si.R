@@ -34,7 +34,7 @@ source.sync.si <- function(source_info,run=TRUE,plot.to.file=FALSE){
   
   propagated.names <- V(sync.out$propagated.graph)$name[V(sync.out$propagated.graph)$synced=="No"]
   
-  synPlotFile <- file.path(project_info$project.path,project.directory.tree$results,"tree_controller.R","sync_updater.png")
+  syncPlotFile <- file.path(project_info$project.path,project.directory.tree$results,"tree_controller.R","sync_updater.png")
   
   if(plot.to.file){png(syncPlotFile)}
   
