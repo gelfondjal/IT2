@@ -38,7 +38,7 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
             
       packages.info.out <- unique(rbind(packages.info.all,new.packs))
       
-      write.csv(packages.info[order(packages.info$Package),],library.data.file,row.names=FALSE)
+      write.csv(packages.info.out[order(packages.info.out$Package),],library.data.file,row.names=FALSE)
     }
     
   }
