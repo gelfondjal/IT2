@@ -1,6 +1,6 @@
 #' Loads librarys within the file library.list.file
 #' @param library.data.file CSV File with a set of library names and repository locations
-#' @param subgroup data frame with Package and repos columns is null if not specific to code
+#' @param subgroup data frame with Package, repos, and specific columns
 #' @param verbose Print which libraries are installed and loaded
 #' @return Library information data
 #' @details Installs and loads all packages
@@ -33,13 +33,6 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
     new.packs <- subset(subgroup,!(Package %in% packages.info$Package))
     
     packages.info <- unique(rbind(subgroup,packages.info))
-  
-    if(nrow(new.packs)>0){
-            
-      packages.info.out <- unique(rbind(packages.info.all,new.packs))
-      
-      write.csv(packages.info.out[order(packages.info.out$Package),],library.data.file,row.names=FALSE)
-    }
     
   }
   
@@ -137,17 +130,16 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
   
   if(!is.null(subgroup)){
   
-    if(nrow(new.packs)>0){
-      
-      packages.info.out <- unique(rbind(packages.info.all,new.packs))
-      
+
+      packages.info.out <- subset(rbind(subgroup,packages.info.all),!duplicated(Package))
+            
       not.installed <- subset(packages.info,!install.check)$Package
       
       packages.info.out <- subset(packages.info.out,!(Package %in% not.installed))
       
       write.csv(packages.info.out[order(packages.info.out$Package),],library.data.file,row.names=FALSE)
     
-  }}
+}
   
   
   print(packages.info$install.check)
