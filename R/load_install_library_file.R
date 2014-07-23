@@ -17,27 +17,26 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
     write.csv(library.stub,library.data.file,row.names=FALSE)
   }
   
-  packages.info <- read.csv(library.data.file,as.is=TRUE)
+  packages.info.all <- read.csv(library.data.file,as.is=TRUE)
   
   if(is.null(packages.info$specific)){packages.info$specific <- FALSE}
   
   #Only load nonspecific packages if subgroup is null
   
   if(is.null(subgroup)){
-    packages.info <- subset(packages.info,!specific)
+    packages.info <- subset(packages.info.all,!specific)
     
   }else{
     
-    packages.info <- subset(packages.info,(!specific) | (Package %in% subgroup$Package))    
+    packages.info <- subset(packages.info, (!specific) | (Package %in% subgroup$Package))    
     
     new.packs <- subset(subgroup,!(Package %in% packages.info$Package))
     
+    packages.info <- unique(rbind(subgroup,packages.info))
   
     if(nrow(new.packs)>0){
-      
-      new.packs$specific <- 1
-      
-      packages.info <- rbind(packages.info,new.packs)
+            
+      packages.info.out <- unique(rbind(packages.info.all,new.packs))
       
       write.csv(packages.info[order(packages.info$Package),],library.data.file,row.names=FALSE)
     }
