@@ -9,7 +9,7 @@ load.install.library.file(library.data.file = NA, subgroup = NULL,
 \arguments{
 \item{library.data.file}{CSV File with a set of library names and repository locations}
 
-\item{subgroup}{data frame with Package and repos columns is null if not specific to code}
+\item{subgroup}{data frame with Package, repos, and specific columns}
 
 \item{verbose}{Print which libraries are installed and loaded}
 }
