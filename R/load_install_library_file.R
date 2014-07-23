@@ -28,7 +28,7 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
     
   }else{
     
-    packages.info <- subset(packages.info, (!specific) | (Package %in% subgroup$Package))    
+    packages.info <- subset(packages.info.all, (!specific) | (Package %in% subgroup$Package))    
     
     new.packs <- subset(subgroup,!(Package %in% packages.info$Package))
     
