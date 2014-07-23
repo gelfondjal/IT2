@@ -134,6 +134,9 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
     
   }
   
+  
+  print(packages.info$install.check)
+  
   return(packages.info)	
   
   
