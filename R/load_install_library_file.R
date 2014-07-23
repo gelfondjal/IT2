@@ -19,7 +19,7 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
   
   packages.info.all <- read.csv(library.data.file,as.is=TRUE)
   
-  if(is.null(packages.info$specific)){packages.info.all$specific <- FALSE}
+  if(is.null(packages.info.all$specific)){packages.info.all$specific <- FALSE}
   
   #Only load nonspecific packages if subgroup is null
   
