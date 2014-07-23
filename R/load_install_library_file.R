@@ -141,9 +141,9 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
       
       packages.info.out <- unique(rbind(packages.info.all,new.packs))
       
-      not.installed <- subset(packages.info,!install.check)$Packages
+      not.installed <- subset(packages.info,!install.check)$Package
       
-      packages.info.out <- subset(packages.info.out,!(Packages %in% not.installed))
+      packages.info.out <- subset(packages.info.out,!(Package %in% not.installed))
       
       write.csv(packages.info.out[order(packages.info.out$Package),],library.data.file,row.names=FALSE)
     
