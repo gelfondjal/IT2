@@ -10,7 +10,11 @@ shinyUI(fluidPage(pageWithSidebar(
   sidebarPanel(
          
     conditionalPanel(condition="input.conditionedPanels == 'Select Project'",
-                     
+						
+						helpText(h3("Choose an Existing Project")),
+						htmlOutput("selectUI"),
+					br(),
+
                      helpText(h3("Create a New Project")),
                      textInput('project.id.make', "Project ID:", value = "Example project"),
                      textInput('project.directory', "Project directory:", 
@@ -21,9 +25,7 @@ shinyUI(fluidPage(pageWithSidebar(
                      br(),br(),
                      actionButton("submitProject","Create project"),  
                      br(),br(),
-                     helpText(h3("Choose an Existing Project")),
-                     htmlOutput("selectUI"),
-                     br(),
+                     
                      img(src="treePic.jpg",height=360,width=280)
                      ),
                                                                                                                  
