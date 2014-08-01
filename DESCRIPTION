@@ -12,4 +12,5 @@ Depends:
     igraph,
     digest,DBI,RSQLite,fields,
     gplots,
+    shiny,
     R2HTML
