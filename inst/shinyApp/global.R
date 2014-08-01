@@ -14,3 +14,4 @@ urly <- 'http://images.fineartamerica.com/images-medium-large-5/tree-fog-sunrise
 destin <- file.path(gsub("\\\\","/",tdir),"image.jpg")
 
 download.file(urly,destin)
+

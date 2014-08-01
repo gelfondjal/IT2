@@ -34,6 +34,8 @@ plant.tree <- function(project.id,project.path,swap.directory){
     
     dir.create(file.path(project.path,project.directory.tree$analysis))
     
+    dir.create(file.path(project.path,project.directory.tree$data))
+    
     write.csv(rbind(orchards.old,empty.orchard),orchard.site,row.names=FALSE)
     
     
