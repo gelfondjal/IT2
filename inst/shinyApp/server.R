@@ -28,8 +28,17 @@ shinyServer(function(input, output) {
   
   output$selectUI<-renderUI({
     input$submitProject
+   
     selectInput(inputId = "project.id", label="", choices=get_orchard()$project.id, 
                 selected = get_orchard()$project.id[1])
+  })
+  
+  output$selectAppUI<-renderUI({
+    input$submitProject
+    source_info <- pull_source_info(input$project.id)    
+    app.list <- list.files(file.path(source_info$project.path,project.directory.tree$support,"Apps"))
+    selectInput(inputId = "powerApp", label="Select App", choices=app.list, 
+                selected = app.list[1])
   })
   
   
@@ -105,7 +114,38 @@ shinyServer(function(input, output) {
         paste("Creating report",input$project.id)   
       })
     }
-  })       
+  })  
+  
+  output$runApp <- renderText({ 
+    text.out <- "Waiting"
+    if(input$submitRunApp!=0){                                             
+      isolate({  
+        source_info <- pull_source_info(input$project.id)
+        
+        
+        app.dir <- file.path(source_info$project.path,project.directory.tree$support,"Apps",input$powerApp)
+      
+        portL <- floor(runif(1)*9998+1)
+        
+        app.command <- paste0("shiny::runApp('",app.dir,"',port=",portL,",host='127.0.0.1')")
+        
+        run.command <- paste("library(IT2)",app.command,sep="\n")
+        
+        tf <- tempfile()
+        
+        write(run.command,tf)
+        browseURL(paste0("http://127.0.0.1:",portL))
+        clean_source(tf)
+    
+        text.out <- paste("Run",input$powerApp)
+      })
+      
+    } 
+    text.out 
+  }) 
+  
+  
+  
   
   
   ##########################################################################################

@@ -52,6 +52,9 @@ shinyUI(fluidPage(pageWithSidebar(
     conditionalPanel(condition="input.conditionedPanels == 'Report'", 
                      actionButton("submitReport","Create report"),
                      br(),br(),
+                     actionButton("submitRunApp","Run App"),br(),br(),
+                     htmlOutput("selectAppUI"),
+                  
                      img(src="projectReport.jpg",height=340,width=240)
                      ),
     
@@ -104,7 +107,7 @@ shinyUI(fluidPage(pageWithSidebar(
       tabPanel("Select Project",br(),br(),tableOutput("createproject")),
       tabPanel("Programs & Libraries",br(),br(),tableOutput("myChart"), tableOutput('text1'),
                tableOutput('libraryTable'),tableOutput('addLibraryTable')),
-      tabPanel("Report",br(),br(), tableOutput("projectus")),
+      tabPanel("Report",br(),br(), tableOutput("projectus"),tableOutput("runApp")),
       tabPanel("Synchronize",br(),br(), imageOutput("syncPlot"),tableOutput("syncTest"),br(),br(), 
                plotOutput("syncer"),br(),br(),textOutput("CommitOut")),
       tabPanel("Send",br(),br(), tableOutput("Programs"),br(),br(), textOutput("Sent")),
