@@ -58,7 +58,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   
   # create depedency ref class instance
   
-  source_info$dependency <- IT2::dependency(data= data.frame())
+  source_info$dependency <- dependency(data= data.frame())
   
   initialize.dependency.info(source_info)
   
