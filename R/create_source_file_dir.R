@@ -31,10 +31,12 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   dependency.dir <- file.path(project.path,project.tree$dependency.dir)
   support.dir <- file.path(project.path,project.tree$support)
   library.dir <- file.path(support.dir,project.tree$library.bank)
+  apps.dir <- file.path(support.dir,"Apps")
+  
   
   # Create necessary directories
   
-  apply(matrix(c(analysis.dir,data.dir,results.dir,tex.dir,dependency.dir,support.dir,library.dir   )),1,dir.create,showWarnings=FALSE,recursive=TRUE)
+  apply(matrix(c(analysis.dir,data.dir,results.dir,tex.dir,dependency.dir,support.dir,library.dir,apps.dir   )),1,dir.create,showWarnings=FALSE,recursive=TRUE)
   
   source.file.info <- Create.file.info(analysis.dir,source.file,description=source.description)	
   
@@ -59,6 +61,26 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   
   initialize.dependency.info(source_info)
   
+  #Start html markup tracking
+  
+  panderOptions("table.split.table",Inf)
+  evalsOptions("cache.dir",source_info$tex.dir)
+  
+  source_info$report <- Pandoc$new()
+  source_info$pandoc <- FALSE
+  author <- ""
+  try({
+    git_binary_path <- git_path(NULL)
+    author  <- system2(git_binary_path, paste("config --global user.name"),stdout=TRUE)
+  })
+  try(pandocinstalled <- source_info$report$export("test",open=FALSE))
+  if(!exists("pandocinstalled")){
+    return("Error: Pandoc is not installed on this computer")}else {
+      source_info$pandoc <- TRUE
+      source_info$report$title <- paste(source_info$project.id,source.file)
+      source_info$report$author <-paste("IT2",author)
+      
+    }
   return(source_info)
   
 }	
