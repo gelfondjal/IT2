@@ -1,15 +1,22 @@
 ## server.R
+library(shiny)
 require(rCharts)
 library(IT2)
 library(plyr) 
 library(devtools)
+library(shinyIncubator)
+source("helpers.R")
 
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
     
   ##########################################################################################
   ### CREATE PROJECT TAB
 
+  
+  output$projectselected<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
   
   output$createproject <- renderText({
     textout <- "Waiting to create project"
@@ -28,23 +35,18 @@ shinyServer(function(input, output) {
   
   output$selectUI<-renderUI({
     input$submitProject
-   
     selectInput(inputId = "project.id", label="", choices=get_orchard()$project.id, 
                 selected = get_orchard()$project.id[1])
-  })
-  
-  output$selectAppUI<-renderUI({
-    input$submitProject
-    source_info <- pull_source_info(input$project.id)    
-    app.list <- list.files(file.path(source_info$project.path,project.directory.tree$support,"Apps"))
-    selectInput(inputId = "powerApp", label="Select App", choices=app.list, 
-                selected = app.list[1])
   })
   
   
   ##########################################################################################
   ### PROGRAMS AND LIBRARIES TAB
 
+  
+  output$projectselected2<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
   
   output$myChart <- renderTable({
     temp <- subset(all.orchards,project.id==input$project.id,select="project.path")
@@ -105,6 +107,18 @@ shinyServer(function(input, output) {
   ### REPORT TAB
 
   
+  output$projectselected3<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
+  
+  output$selectAppUI<-renderUI({
+    input$submitProject
+    source_info <- pull_source_info(input$project.id)    
+    app.list <- list.files(file.path(source_info$project.path,project.directory.tree$support,"Apps"))
+    selectInput(inputId = "powerApp", label="Select App", choices=app.list, 
+                selected = app.list[1])
+  })
+  
   output$projectus <- renderText({ 
     if(input$submitReport!=0){                                             
       isolate({  
@@ -121,7 +135,6 @@ shinyServer(function(input, output) {
     if(input$submitRunApp!=0){                                             
       isolate({  
         source_info <- pull_source_info(input$project.id)
-        
         
         app.dir <- file.path(source_info$project.path,project.directory.tree$support,"Apps",input$powerApp)
       
@@ -143,51 +156,68 @@ shinyServer(function(input, output) {
     } 
     text.out 
   }) 
-  
-  
-  
-  
+
   
   ##########################################################################################
   ### SYNCHRONIZE TAB
 
   
-  output$syncPlot <- renderImage({
-    source_info <- pull_source_info(input$project.id)
-    filename <- file.path(source_info$project.path,project.directory.tree$results,
-                          "tree_controller.R","sync_updater.png")
-    filename <- gsub("\\\\","/",filename)
-    # Return a list containing the filename and alt text
-    list(src = filename,
-         alt = paste("Waiting to sync"))  
-  }, deleteFile = FALSE)
+  output$projectselected4<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
+  
+#  output$syncPlot <- renderImage({
+#    source_info <- pull_source_info(input$project.id)
+#    filename <- file.path(source_info$project.path,project.directory.tree$results,
+#                          "tree_controller.R","sync_updater.png")
+#    filename <- gsub("\\\\","/",filename)
+#    # Return a list containing the filename and alt text
+#    list(src = filename,
+#         alt = paste("Waiting to sync"))  
+#  }, deleteFile = FALSE)
   
   output$syncTest <- renderText({ 
     if(input$submitSyncTest!=0){                                             
       isolate({  
         source_info <- pull_source_info(input$project.id)
         test.sync0 <- sync.test.si(source_info)
-        print(ifelse(identical(test.sync0$synchronize,TRUE),"Syncrhonized","Not Synchronized"))
+        print(paste(input$project.id,ifelse(identical(test.sync0$synchronize,TRUE),"Syncrhonized","Not Synchronized")))
       })
     } 
   }) 
   
-  output$syncer <- renderPlot({ 
-    if(input$submitSyncRun!=0){                                             
-      #isolate({  
-      source_info <- pull_source_info(input$project.id)
-      filename <- file.path(source_info$project.path,project.directory.tree$results,
-                            "tree_controller.R","sync_updater.png")
-      htmlfile <- file.path(source_info$project.path,project.directory.tree$results,
-                            "tree_controller.R","syncrhonize.html")
-      html.out <- paste("<img src=sync_updater.png>")
-      write(html.out,htmlfile)
-      browseURL(paste0("file://",htmlfile))
-      test.sync <- source.sync.si(source_info,run=TRUE,TRUE)
-      #  test.sync <- sync.test.si(source_info)
-      #   print(test.sync)
-      # print("Hello")
-      # })
+#  output$syncer <- renderPlot({ 
+#    if(input$submitSyncRun!=0){                                             
+#      #isolate({  
+#      source_info <- pull_source_info(input$project.id)
+#      filename <- file.path(source_info$project.path,project.directory.tree$results,
+#                            "tree_controller.R","sync_updater.png")
+#      htmlfile <- file.path(source_info$project.path,project.directory.tree$results,
+#                            "tree_controller.R","syncrhonize.html")
+#      html.out <- paste("<img src=sync_updater.png>")
+#      write(html.out,htmlfile)
+#      browseURL(paste0("file://",htmlfile))
+#      test.sync <- source.sync.si(source_info,run=TRUE,TRUE)
+#      #  test.sync <- sync.test.si(source_info)
+#      #   print(test.sync)
+#      # print("Hello")
+#      # })
+#    }
+#  })
+  output$progressbar<-renderText({
+    if(input$submitSyncRun!=0){
+      isolate({
+        text<-paste("Waiting to synchronize",input$project.id) 
+        source_info <- pull_source_info(input$project.id)
+        runtime<-runtimes.source.sync.si(source_info)
+        wait<-ceiling(as.numeric(sum( runtime$last.run.time.sec))*1.5)
+        withProgress(session,min=1,max=3,expr={
+          setProgress(message = 'Synchronizing',detail=paste("Approximate Time:", wait, "seconds"),value=2)
+          test.sync <- source.sync.si(source_info,run=TRUE,TRUE)
+          setProgress(value=3)
+          text<-paste("Sync successful for",input$project.id)
+        })
+      })
     }
   })
   
@@ -212,6 +242,10 @@ shinyServer(function(input, output) {
   ##########################################################################################
   ### SEND TAB
 
+
+  output$projectselected5<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
   
   output$Programs <- renderTable({
     source_info <- pull_source_info(input$project.id)
@@ -226,7 +260,8 @@ shinyServer(function(input, output) {
     if(input$submitSend!=0){                                             
       isolate({  
         source_info <- pull_source_info(input$project.id)
-        send.branch.si(source_info,input$filename.send,FALSE)
+        name<-ifelse(as.logical(input$all.branchesTF),"all",input$filename.send)
+        send.branch.si(source_info,name,all=as.logical(input$all.branchesTF))
         paste("Sent",input$filename.send,Sys.time()) 
       })
     } 
@@ -236,6 +271,10 @@ shinyServer(function(input, output) {
   ##########################################################################################
   ### GRAFT TAB
 
+
+  output$projectselected6<-renderUI({
+    helpText(paste(input$project.id,"project selected."))
+  })
   
   output$Branches <- renderTable({
     input$submitSend
@@ -273,6 +312,18 @@ shinyServer(function(input, output) {
       }
     }
     textout  
+  })
+
+  output$Gitlogin<-renderText({
+    textout<-"Waiting to log into Git"
+    if(input$submitGitLogin!=0){
+      login<-git.configure(input$git.username,input$git.email)
+      if(login[[1]]==0&login[[2]]==0){
+        textout<-"Login successful"
+      }
+      else{textout<-"Login failed."} 
+    }
+    textout
   })
   
   output$IT2<-renderText({
