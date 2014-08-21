@@ -58,7 +58,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   
   # create depedency ref class instance
   
-  source_info$dependency <- dependency(data= data.frame())
+  source_info$dependency <- IT2::dependency(data= data.frame())
   
   initialize.dependency.info(source_info)
   
@@ -66,7 +66,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   
   panderOptions("table.split.table",Inf)
   evalsOptions("cache.dir",source_info$tex.dir)
-  
+  setwd(source_info$tex.dir)
   source_info$report <- Pandoc$new()
   source_info$pandoc <- FALSE
   author <- ""
@@ -74,7 +74,7 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
     git_binary_path <- git_path(NULL)
     author  <- system2(git_binary_path, paste("config --global user.name"),stdout=TRUE)
   })
-  try(pandocinstalled <- source_info$report$export("test",open=FALSE))
+  try(pandocinstalled <- source_info$report$export("tester",open=FALSE))
   if(!exists("pandocinstalled")){
     return("Error: Pandoc is not installed on this computer")}else {
       source_info$pandoc <- TRUE
