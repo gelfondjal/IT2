@@ -23,7 +23,7 @@ finalize.dependency.si <- function(source_info,write=TRUE,commit="",effort.hours
     evalsOptions("cache.dir",source_info$tex.dir)
     setwd(source_info$tex.dir)
     source_info$report$format<-'html'
-    source_info$report$export(source_info$file$db.name)
+    source_info$report$export(source_info$file$db.name,open=FALSE)
     pandocInfo <- Create.file.info(source_info$tex.dir,paste0(source_info$file$db.name,".html"),"html markdown")
     Write.cap(NULL,pandocInfo,I,source_info)
     setwd(current.dir)
