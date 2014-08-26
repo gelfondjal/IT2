@@ -3,6 +3,6 @@ if(!require(shinyIncubator)){devtools::install_github("shiny-incubator", "rstudi
 require(shinyIncubator)
 library(devtools)
 library(IT2)
-
-all.orchards <- read.csv(file.path(path.expand.2("~"), "ProjectPaths", "projectid_2_directory.csv"), as.is = TRUE)
+panderOptions("table.split.table",Inf)
+all.orchards <-get_orchard()
 

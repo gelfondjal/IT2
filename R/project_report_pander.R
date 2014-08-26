@@ -18,9 +18,9 @@ function (source_info, graph.width = 960, graph.height = 500)
   library(plyr)
   
   #See if Pander is installed
-  #setwd(source_info$results.dir)
-  panderOptions("table.split.table",Inf)
-  evalsOptions("cache.dir",source_info$results.dir)
+  setwd(source_info$results.dir)
+#  panderOptions("table.split.table",Inf)
+#  evalsOptions("cache.dir",source_info$results.dir)
   
   myReport <- Pandoc$new()
   author <- ""
