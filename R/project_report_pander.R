@@ -19,10 +19,10 @@ function (source_info, graph.width = 960, graph.height = 500)
   
   #See if Pander is installed
   setwd(source_info$results.dir)
-#  panderOptions("table.split.table",Inf)
-#  evalsOptions("cache.dir",source_info$results.dir)
-  
-  myReport <- Pandoc$new()
+  panderOptions("table.split.table",Inf)
+  evalsOptions("cache.dir",source_info$results.dir)
+  try({rm(myReport)})
+  myReport <<- Pandoc$new()
   author <- ""
   try({
   git_binary_path <- git_path(NULL)
@@ -30,6 +30,7 @@ function (source_info, graph.width = 960, graph.height = 500)
   })
   try(pandocinstalled<-myReport$export("test",open=FALSE))
   if(!exists("pandocinstalled")){
+#   if(FALSE){
     project_reporter(source_info, graph.width , graph.height )
     return("Error: Pandoc is not installed on this computer")}else {
   #require(R2HTML)
@@ -77,6 +78,7 @@ function (source_info, graph.width = 960, graph.height = 500)
                      ]
   program.split <- split(project.info$tree, project.info$tree$source.file)
   summaries.out <- lapply(program.split, program.io.table)
+  
   outputs <- list()
   for (source.iter in names(summaries.out)) {
     temp <- summaries.out[[source.iter]]
@@ -84,44 +86,57 @@ function (source_info, graph.width = 960, graph.height = 500)
     outputs[[source.iter]] <- subset(temp, select = c("IO", 
                                                       "File", "Description"))
   }
-#  HTMLStart(outdir = source_info$results.dir, filename = "project_summary", 
-#            extension = "html", echo = FALSE, autobrowse = FALSE, 
-#            HTMLframe = TRUE, withprompt = "HTML> ", CSSFile = "R2HTML.css", 
-#            BackGroundColor = "FFFFFF", BackGroundImg = "", Title = "R output")
+
+  
 myReport$title<-paste(source_info$project.id,'Project Summary')
 myReport$author<-paste("IT2",author)
 #  R2HTML::HTML(subset(tab.out, select = c("source.link", "source.file.description", 
 #                                          "last.run.time.sec")), caption = paste(source_info$project.id, 
 #                                                                                 "Project Summary"), captionalign = "top")
-#tab.out0 <- subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec"))
+tab.out0 <- subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec"))
 #rownames(tab.out0) <- 1:nrow(tab.out0)
-myReport$add(subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec")))
+
+
+tabtopander <<- tab.out0
+rownames(tabtopander) <<- 1:nrow(tabtopander)
+
+myReport$add(tabtopander)
+
 #print(subset(tab.out,select=c("source.link","source.file.description","last.run.time.sec")))
 #  R2HTML::HTML(data.frame(Big_Graph = make.hyperlink(project.graph.file, 
 #                                                     "Project Graph")), align = "center")
-myReport$add(data.frame(Big_Graph = make.hyperlink(project.graph.file, "Project Graph")))
+
+tabtopander <<- data.frame(Big_Graph = make.hyperlink(project.graph.file, "Project Graph"))
+rownames(tabtopander) <<- 1:nrow(tabtopander)
+myReport$add(tabtopander)
+
 #  R2HTML::HTML(data.frame(No_support_file_graph = make.hyperlink(reduced.project.graph.file, 
 #                                                                 "Project Graph")), align = "center")
-myReport$add(data.frame(No_support_file_graph = make.hyperlink(reduced.project.graph.file,"Project Graph")))
-#  supports <- subset(rbind.fill(outputs), Description == "Support file")
-#  for (namer in names(outputs)) {
-#    R2HTML::HTML(subset(outputs[[namer]], Description != 
-#                          "Support file"), caption = namer, captionalign = "top")
-#  }
+tabtopander <<- data.frame(No_support_file_graph = make.hyperlink(reduced.project.graph.file,"Project Graph"))
+rownames(tabtopander) <<- 1:nrow(tabtopander)
+myReport$add(tabtopander)
+
+
+
+
 for (namer in names(outputs)){
   myReport$add.paragraph(namer)
-  #assign(paste0(namer,"_table"),subset(outputs[[namer]], Description !="Support file"))
-  #table.temp<-as.name(paste0(namer,"_table"))
-  myReport$add(subset(outputs[[namer]], Description !="Support file"))
+  
+  tabtopander <<- subset(outputs[[namer]], Description !="Support file")
+  rownames(tabtopander) <<- 1:nrow(tabtopander)
+  
+  myReport$add( tabtopander)
 }
-#  R2HTML::HTML(subset(supports, !duplicated(File)), caption = "Support files", 
-#               captionalign = "top")
+
 myReport$add.paragraph("Support files")
-supports <- subset(rbind.fill(outputs), Description == "Support file")
-myReport$add(subset(supports, !duplicated(File)))
+rownames(tabtopander) <<- 1:nrow(tabtopander)
+
+tabtopander <<-subset(rbind.fill(outputs), (!duplicated(File)) &(Description == "Support file"))
+
+myReport$add( tabtopander)
 
 myReport$format<-'html'
-myReport$export("project_summary_main")
+myReport$export("project_summary")
 #  R2HTML::HTMLStop()
   }
 }

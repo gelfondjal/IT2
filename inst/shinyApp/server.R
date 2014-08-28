@@ -123,8 +123,8 @@ shinyServer(function(input, output,session) {
     if(input$submitReport!=0){                                             
       isolate({  
         source_info <- pull_source_info(input$project.id)
-        project_reporter(source_info) 
-        browseURL(paste0("file://",(file.path(source_info$results.dir,"project_summary_main.html"))))
+        project_reporter_pander(source_info) 
+        browseURL(paste0("file://",(file.path(source_info$results.dir,"project_summary.html"))))
         paste("Creating report",input$project.id)   
       })
     }
