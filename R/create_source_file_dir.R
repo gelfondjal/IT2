@@ -80,6 +80,9 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
       source_info$pandoc <- TRUE
       source_info$report$title <- paste(source_info$project.id,source.file)
       source_info$report$author <-paste("IT2",author)
+      source_info$report$add.paragraph(paste("Script description:",source.description))
+      # Remove leftover plots      
+      file.remove(list.files(file.path(source_info$tex.dir,"plots"),full.names=TRUE))
       
     }
   return(source_info)
