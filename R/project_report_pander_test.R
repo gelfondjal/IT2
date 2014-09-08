@@ -77,7 +77,7 @@ myReport$title<-paste(source_info$project.id,'Project Summary')
 myReport$author<-paste("IT2","notme")
 
 myReport$format<-'html'
-myReport$export("project_summary")
+myReport$export("project_summary",open=FALSE)
 #  R2HTML::HTMLStop()
   }
 }
