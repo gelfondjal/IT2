@@ -136,7 +136,7 @@ tabtopander <<-subset(rbind.fill(outputs), (!duplicated(File)) &(Description == 
 myReport$add( tabtopander)
 
 myReport$format<-'html'
-myReport$export("project_summary")
+myReport$export("project_summary",open=FALSE)
 #  R2HTML::HTMLStop()
   }
 }
