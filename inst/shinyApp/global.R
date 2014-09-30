@@ -10,6 +10,9 @@ all.orchards <-get_orchard()
 
 smart.install.packages <- function(package.name,repository=""){
   
+  print("smart.install.packages")
+  print(require(package.name))
+  
   repository <- ifelse(is.na(repository),"",repository)
   
   if(repository==""){

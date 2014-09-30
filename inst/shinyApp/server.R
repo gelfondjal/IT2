@@ -95,10 +95,22 @@ shinyServer(function(input, output,session) {
         if(!(input$library.name %in% c("","mylibrary"))){
           subgroup <- data.frame(Package=input$library.name,repos=input$library.install,
                                  specific=as.logical(input$library.specific))
-          if(!require(input$library.name)){
+          
+          havepackage <- sum(input$library.name %in%  print(.packages(TRUE)))
+          
+          
+          print("havepackage")
+          
+          print(input$library.name)
+          print(havepackage)
+          
+          if(!havepackage){
             smart.install.packages(input$library.name,input$library.install)
           }
           load.install.library.file(library.file,subgroup)
+          havepackage <- require(input$library.name,lib.loc=.Library)
+          print("havepackage")
+          print(havepackage)
           print(read.csv(library.file))
           subgroup
         }# if real library 

@@ -15,4 +15,5 @@ Depends:
     shiny,
     R2HTML
 Imports:
-    pander
+    pander,
+    rmarkdown
