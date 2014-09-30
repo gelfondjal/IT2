@@ -8,7 +8,7 @@
 #' 
 
 
-Render <- function(Rmd.file,description="Rmarkdown",...){
+Render_Rmd <- function(Rmd.file,description="Rmarkdown",...){
   
   require(rmarkdown)
   
