@@ -94,7 +94,10 @@ shinyServer(function(input, output,session) {
       isolate({  
         if(!(input$library.name %in% c("","mylibrary"))){
           subgroup <- data.frame(Package=input$library.name,repos=input$library.install,
-                                 specific=as.logical(input$library.specific))  
+                                 specific=as.logical(input$library.specific))
+          if(!require(input$library.name)){
+            smart.install.packages(input$library.name,input$library.install)
+          }
           load.install.library.file(library.file,subgroup)
           print(read.csv(library.file))
           subgroup
@@ -109,7 +112,7 @@ shinyServer(function(input, output,session) {
 
   
   output$projectselected3<-renderUI({
-    helpText(paste(input$project.id,"project selected."))
+    helpText(paste(input$project.id,"project seinstalllected."))
   })
   
   output$selectAppUI<-renderUI({

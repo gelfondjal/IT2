@@ -114,8 +114,10 @@ load.install.library.file <- function(library.data.file=NA,subgroup=NULL,verbose
         
         repository <- ifelse(is.na(repository)|(repository==""),getOption("repos"),repository)
         
-        install.packages(packages.info$Package[library.iter],repos=repository)
-        
+        install.packages(packages.info$Package[library.iter],lib=.libPaths()[1],repos=repository)
+        print(.Library)
+        print(.libPaths())
+        print(Sys.getenv("R_LIBS_USER"))
         library(packages.info$Package[library.iter],character=TRUE)		
         
         if(verbose){ print(paste("Loaded",packages.info$Package[library.iter]))}
