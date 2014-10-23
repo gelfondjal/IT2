@@ -9,6 +9,8 @@ path.expand.2 <- function(x){
   
   temp <- path.expand(x)
   
+  temp <- gsub("/~$","",temp)
+  
   out <- gsub("\\\\","/",temp)
   
   return(out)
