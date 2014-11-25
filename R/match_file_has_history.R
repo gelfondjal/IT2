@@ -9,7 +9,7 @@ Match.file.hash.history <- function(git.dir,file.for.hashing){
   
   # Identify the branch of the tree that owns the hash of file.hashed
   
-  hash <- digest(file=file.for.hashing,serialize=FALSE)
+  hash <- Digest(file=file.for.hashing,serialize=FALSE)
   
   matched.commits <- git.history.search(project.dir,hash)
   

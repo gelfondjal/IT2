@@ -46,7 +46,7 @@ Check.file.hash <- function(dependency.dir=NULL,dependency.object=NULL){
     
     current.hash <- ""
     try({
-      current.hash <- digest(file=file.path(x$path[1],x$file[1]),serialize=FALSE)
+      current.hash <- Digest(file=file.path(x$path[1],x$file[1]),serialize=FALSE)
     })
     
     out.counts <- data.frame(current.hash=current.hash,stringsAsFactors=FALSE)
