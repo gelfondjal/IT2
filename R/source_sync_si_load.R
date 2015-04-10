@@ -3,8 +3,8 @@
 #' @return Data.frame with sources needed to synchronize with run times
 #' @export
 source_sync_si_load <- function (source_info) 
-{
-  project_info <- get.project.info.si(source_info)
+{ 
+  project_info <- get.project.info.si(source_info) 
   sync.out <- Sync.test.pi(project_info)
   if (sync.out$synchronized) {
     print(paste("Project synchronized"))
