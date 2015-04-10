@@ -5,7 +5,6 @@ library(IT2)
 library(plyr) 
 library(devtools)
 library(shinyIncubator)
-library(pander)
 source("helpers.R")
 
 
@@ -94,23 +93,8 @@ shinyServer(function(input, output,session) {
       isolate({  
         if(!(input$library.name %in% c("","mylibrary"))){
           subgroup <- data.frame(Package=input$library.name,repos=input$library.install,
-                                 specific=as.logical(input$library.specific))
-          
-          havepackage <- sum(input$library.name %in%  print(.packages(TRUE)))
-          
-          
-          print("havepackage")
-          
-          print(input$library.name)
-          print(havepackage)
-          
-          if(!havepackage){
-            smart.install.packages(input$library.name,input$library.install)
-          }
+                                 specific=as.logical(input$library.specific))  
           load.install.library.file(library.file,subgroup)
-          havepackage <- require(input$library.name,lib.loc=.Library)
-          print("havepackage")
-          print(havepackage)
           print(read.csv(library.file))
           subgroup
         }# if real library 
@@ -124,7 +108,7 @@ shinyServer(function(input, output,session) {
 
   
   output$projectselected3<-renderUI({
-    helpText(paste(input$project.id,"project seinstalllected."))
+    helpText(paste(input$project.id,"project selected."))
   })
   
   output$selectAppUI<-renderUI({
@@ -225,14 +209,73 @@ shinyServer(function(input, output,session) {
       isolate({
         text<-paste("Waiting to synchronize",input$project.id) 
         source_info <- pull_source_info(input$project.id)
-        runtime<-runtimes.source.sync.si(source_info)
-        wait<-ceiling(as.numeric(sum( runtime$last.run.time.sec))*1.5)
-        withProgress(session,min=1,max=3,expr={
-          setProgress(message = 'Synchronizing',detail=paste("Approximate Time:", wait, "seconds"),value=2)
-          test.sync <- source.sync.si(source_info,run=TRUE,TRUE)
-          setProgress(value=3)
-          text<-paste("Sync successful for",input$project.id)
-        })
+        
+        syncer <- source_sync_si_load(source_info)
+        
+        run.times <- syncer$run.times
+        
+        ID.sync.out <- syncer$ID.sync.out
+        
+        sync.out <- syncer$sync.out
+     
+        wait0<-ceiling(as.numeric(sum( run.times$last.run.time.sec))*1.5)
+        
+        
+        progress <- shiny::Progress$new()
+        on.exit(progress$close())
+      
+        n.scripts.to.sync <- nrow(ID.sync.out)
+        
+        startmessage <- paste("Approximate Time:", wait0, "seconds",n.scripts.to.sync,"scripts")
+        
+        progress$set(message=paste("Start sync",startmessage),value=0)
+        
+        Sys.sleep(3)
+        
+        
+        full.time <- wait0
+        
+        for (source.iter in 1:nrow(ID.sync.out)) {
+        
+          runmessage <- paste(ID.sync.out$file[source.iter],paste0(source.iter,"/",n.scripts.to.sync),wait0,"seconds remaining")
+          
+          progress$inc(1/2,detail=runmessage)
+         # progress$set(message=paste("Start sync",startmessage),value=0)
+        
+          last.prog <- ""
+         
+      
+          try({
+          clean_source(file.path(ID.sync.out$path[source.iter],ID.sync.out$file[source.iter]))
+            
+          #Sys.sleep(3)
+          
+          last.prog <- ID.sync.out$file[source.iter]
+          
+          
+          })
+          
+          print(wait0)
+          
+          print(run.times$last.run.time.sec[source.iter] )
+          
+          wait0 <- wait0 - run.times$last.run.time.sec[source.iter] 
+          
+          
+          
+        }
+        
+        #withProgress(session,min=1,max=3,expr={
+      #    setProgress(message = 'Synchronizing',detail=paste("Approximate Time:", wait, "seconds"),value=2)
+        #  test.sync <- source.sync.si(source_info,run=TRUE,TRUE)
+      #    setProgress(value=3)
+      
+      text<-paste(startmessage,"Sync successful for",input$project.id)
+      if(last.prog==""){    
+        text<-paste(last.prog,"failed sync for",input$project.id)
+          }
+      text
+        #})
       })
     }
   })
