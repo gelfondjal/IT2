@@ -119,7 +119,7 @@ shinyUI(fluidPage(theme="style.css",pageWithSidebar(
   
   mainPanel(
         
-    shinyIncubator::progressInit(),
+    #shinyIncubator::progressInit(),
     tabsetPanel(type = "tabs",
       tabPanel("Select Project",br(),br(),tableOutput("createproject")),
       tabPanel("Programs & Libraries",br(),br(),tableOutput("myChart"), tableOutput('text1'),
