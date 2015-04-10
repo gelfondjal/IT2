@@ -1,6 +1,7 @@
 ## ui.R
 
 library(IT2)
+library(shinyIncubator)
 
 shinyUI(fluidPage(theme="style.css",pageWithSidebar(
 
