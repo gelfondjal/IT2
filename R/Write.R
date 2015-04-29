@@ -20,7 +20,7 @@ Write <- function(obj=NULL,file.name="data.csv",description="Result file",write.
     datestring <- format(Sys.time(), "%d %b %Y")
     
     
-    filenameout <- paste0(prefix,"_",datestring,suffix)
+    file.name <- paste0(prefix,"_",datestring,suffix)
     
     file.name <- gsub(" ","_",file.name)
     
