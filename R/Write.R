@@ -17,7 +17,7 @@ Write <- function(obj=NULL,file.name="data.csv",description="Result file",write.
     prefix <- gsub("\\..*","",file.name)
     suffix <- gsub(".*\\.","\\.",file.name)
     
-    datestring <- format(Sys.time(), "%d %b %Y")
+    datestring <- gsub("\\-","_",Sys.Date())
     
     
     file.name <- paste0(prefix,"_",datestring,suffix)
