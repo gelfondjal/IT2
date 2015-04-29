@@ -4,7 +4,7 @@
 \title{Write object and capture file information}
 \usage{
 Write(obj = NULL, file.name = "data.csv", description = "Result file",
-  write.fcn = guess.write.fcn(file.name), ...)
+  write.fcn = guess.write.fcn(file.name), date = FALSE, ...)
 }
 \arguments{
 \item{file.name}{file to write to the source "Result" directory}
@@ -12,6 +12,8 @@ Write(obj = NULL, file.name = "data.csv", description = "Result file",
 \item{description}{describes object to write}
 
 \item{write.fcn}{function for writing file of object type}
+
+\item{date}{logical for adding date to filename}
 }
 \value{
 File information list
