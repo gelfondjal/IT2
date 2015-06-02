@@ -14,4 +14,7 @@ data frame of stacked dependency files
 \description{
 Collect trees from dependency directory
 }
+\details{
+adapts to relative or absolute directories
+}
 
