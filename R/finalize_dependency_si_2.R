@@ -15,6 +15,8 @@ finalize.dependency.si.2 <- function(source_info,write=TRUE,commit=""){
   # write to db if database does not already exist
   # return dependency object
   
+  effort.hours <- 0
+  
   current.dir <- getwd()
   
   Write(sessionInfo(),paste0("Session_info_",source_info$file$db.name,".RObj"),paste0("sessionInfo for", source_info$file[["file"]]),save)
