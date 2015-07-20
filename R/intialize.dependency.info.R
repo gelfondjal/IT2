@@ -39,7 +39,7 @@ initialize.dependency.info <- function(source_info_arg){
     
     git_binary_path <- git_path(NULL)
     
-    temp <- system2(git_binary_path,"log")
+    temp <- system2(git_binary_path,"log",stdout=NULL)
     
     if(temp==128){
       
