@@ -20,11 +20,11 @@ Make.dependency.graph.obj <- function(dependency.out){
   
   dependencies <- merge(dependencies,subset(file.info,file.class="source",select=c("fullname","unique.file")),by.x="source.fullname",by.y="fullname",all.x=TRUE)
   
-  dependencies <- rename(dependencies,replace=c("unique.file"="source.fullname.abbr"))
+  dependencies <- plyr::rename(dependencies,replace=c("unique.file"="source.fullname.abbr"))
   
   dependencies <- merge(dependencies,subset(file.info,file.class="target",select=c("fullname","unique.file")),by.x="target.fullname",by.y="fullname",all.x=TRUE)
   
-  dependencies <- rename(dependencies,replace=c("unique.file"="target.fullname.abbr"))
+  dependencies <- plyr::rename(dependencies,replace=c("unique.file"="target.fullname.abbr"))
   
   
   
