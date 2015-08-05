@@ -6,7 +6,7 @@
 \usage{
 create.source.file.dir(project.id = "", source.file,
   source.description = "", project.path = get.project.path(project.id),
-  project.tree = project.directory.tree, git.path = NULL)
+  project.tree = project.directory.tree, git.path = NULL, git.log = TRUE)
 }
 \arguments{
 \item{project.id}{is the project id name string}

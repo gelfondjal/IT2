@@ -38,8 +38,8 @@ initialize.dependency.info <- function(source_info_arg){
     setwd(source_info_arg$analysis.dir)
     
     git_binary_path <- git_path(NULL)
-    
-    temp <- system2(git_binary_path,"log",stdout=NULL)
+    if(source_info_arg$git.log){temp <- system2(git_binary_path,"log",stdout="")}else{
+    temp <- system2(git_binary_path,"log",stdout=NULL)}
     
     if(temp==128){
       

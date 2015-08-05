@@ -11,7 +11,7 @@
 #' 
 create.source.file.dir <- function(project.id="",source.file,source.description="",project.path=get.project.path(project.id),project.tree=project.directory.tree,
                                    
-                                   git.path=NULL){
+                                   git.path=NULL,git.log = TRUE){
   require(devtools)
   require(plyr)
   require(igraph)
@@ -54,7 +54,9 @@ create.source.file.dir <- function(project.id="",source.file,source.description=
   
   source_info$dependency.file <- paste(source.file.info[2],".txt",sep="")	
   
-  source_info$git.path <- git.path		
+  source_info$git.path <- git.path
+  
+  source_info$git.log <- git.log		
   
   # create depedency ref class instance
   
