@@ -19,6 +19,7 @@ finalize.dependency.si <- function(source_info,write=TRUE,commit="",effort.hours
   Write(sessionInfo(),paste0("Session_info_",source_info$file$db.name,".RObj"),paste0("sessionInfo for", source_info$file[["file"]]),save)
   
   if(source_info$pandoc){
+  	try({
     panderOptions("table.split.table",Inf)
     evalsOptions("cache.dir",source_info$tex.dir)
     setwd(source_info$tex.dir)
@@ -26,6 +27,7 @@ finalize.dependency.si <- function(source_info,write=TRUE,commit="",effort.hours
     source_info$report$export(source_info$file$db.name,open=FALSE)
     pandocInfo <- Create.file.info(source_info$tex.dir,paste0(source_info$file$db.name,".html"),"html markdown")
     Write.cap(NULL,pandocInfo,I,source_info)
+    })
     setwd(current.dir)
   }
   
