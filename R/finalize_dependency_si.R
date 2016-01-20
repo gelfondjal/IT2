@@ -19,7 +19,9 @@ finalize.dependency.si <- function(source_info,write=TRUE,commit="",effort.hours
   Write(sessionInfo(),paste0("Session_info_",source_info$file$db.name,".RObj"),paste0("sessionInfo for", source_info$file[["file"]]),save)
   
   if(source_info$pandoc){
+  	trier <- "Pandoc not working"
   	try({
+  	trier <- ""
     panderOptions("table.split.table",Inf)
     evalsOptions("cache.dir",source_info$tex.dir)
     setwd(source_info$tex.dir)
@@ -28,6 +30,9 @@ finalize.dependency.si <- function(source_info,write=TRUE,commit="",effort.hours
     pandocInfo <- Create.file.info(source_info$tex.dir,paste0(source_info$file$db.name,".html"),"html markdown")
     Write.cap(NULL,pandocInfo,I,source_info)
     })
+    
+    if(trier!=""){warning(trier)}
+    
     setwd(current.dir)
   }
   
